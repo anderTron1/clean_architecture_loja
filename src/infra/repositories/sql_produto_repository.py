@@ -31,7 +31,7 @@ class SQLProdutoRepository(ProdutoRepository):
         alterou = False
         for campo in campos:
             valor = getattr(produto, campo)
-            if valor is not None and valor is not "":
+            if valor is not None and valor != "":
                 setattr(p_sql, campo, valor)
                 alterou = True
                 

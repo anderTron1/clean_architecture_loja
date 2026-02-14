@@ -15,8 +15,9 @@ from src.interfaces.routes.produto_route import criar_produto_controller
 def create_app():
     app = Flask(__name__)
 
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///loja.db"
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["TESTING"] = True
 
     db.init_app(app)
     migrate.init_app(app, db)
