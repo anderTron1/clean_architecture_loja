@@ -1,0 +1,15 @@
+from src.domain.produto import Produto
+from src.use_cases.produto.dtos import ProdutoOutputDTO
+
+class BuscarProdutoUseCase:
+    def __init__(self, produto_repo) -> None:
+        self.produto_repo = produto_repo
+
+    def execute(self, id: int) -> ProdutoOutputDTO:
+        produto = self.produto_repo.buscar(id)
+        
+        return ProdutoOutputDTO(
+            id=produto.id,
+            nome=produto.nome,
+            preco=produto.preco
+        )

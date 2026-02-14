@@ -1,0 +1,11 @@
+[run]
+source = src
+omit =
+    */__init__.py
+    */domain/repositories/*
+    */infra/models/*
+    */infra/db.py
+    */infra/app.py
+    */interfaces/presenters/*
+    */tests/*
+    */venv/*
