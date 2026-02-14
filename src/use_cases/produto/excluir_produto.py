@@ -6,3 +6,4 @@ class ExcluirProdutoUseCase:
     
     def execute(self, id) -> None:
         self.produto_repo.excluir(id)
+        
