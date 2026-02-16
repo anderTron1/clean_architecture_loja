@@ -16,16 +16,14 @@ class Estoque:
         raise EstoqueInvalidoException("Não pode ser editada diretamente. Use métodos específicos para alterar.")
 
     def adicionar(self, qtd):
-        if qtd <= 0:
+        if qtd is None or qtd <= 0:
             raise EstoqueInvalidoException("Valor inálido para adicionar ao estoque")
         self.__quantidade  += qtd
     
     def baixar(self, qtd):
-        if qtd <= 0:
+        if qtd is None or qtd <= 0:
             raise EstoqueInvalidoException("Valor inválido para remover do estoque")
         
         if qtd > self.__quantidade :
             raise EstoqueInvalidoException("Quantidade insuficiente no estoque")
         self.__quantidade  -= qtd
-        
-    

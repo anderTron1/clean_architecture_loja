@@ -56,7 +56,7 @@ class SQLEstoqueRepository(EstoqueRepository):
         )
         estoque.adicionar(quantidade)
 
-        est_sql.quatidade = estoque.quantidade
+        est_sql.quantidade = estoque.quantidade
         db.session.commit()
 
         return estoque

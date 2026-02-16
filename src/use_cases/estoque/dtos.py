@@ -16,4 +16,4 @@ class AdicionarEstoqueDTO:
 
 @dataclass
 class BaixarEstoqueDTO:
-    quantiddae: int
+    quantidade: int

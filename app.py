@@ -48,6 +48,7 @@ def create_app():
     buscar_estoque = BuscarEstoqueUseCase(estoque_repo)
     adicionar_estoque = AdicionarEstoqueUseCase(estoque_repo)
     baixar_estoque = BaixarEstoqueUseCase(estoque_repo)
+    
     estoque_controller = criar_estoque_controller(
         buscar_estoque,
         adicionar_estoque,
