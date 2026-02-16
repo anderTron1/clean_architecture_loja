@@ -1,21 +1,19 @@
 from flask import Flask
 
-from src.infra.db import db, migrate
-
-from src.infra.repositories.sql_produto_repository import SQLProdutoRepository
-
-from src.use_cases.produto.salvar_produto import SalvarProdutoUseCase
-from src.use_cases.produto.editar_produto import EditarProdutoUseCase
-from src.use_cases.produto.excluir_produto import ExcluirProdutoUseCase
-from src.use_cases.produto.buscar_produto import BuscarProdutoUseCase
-from src.use_cases.produto.listar_produto import ListarProdutosUseCase
+from src.infra.db.db import db, migrate
 
 from src.interfaces.routes.produto_route import criar_produto_controller
+from src.infra.repositories.sql_produto_repository import SQLProdutoRepository
+from src.use_cases.produto.salvar_produto import SalvarProdutoUseCase
+from src.use_cases.produto.editar_produto import EditarProdutoUseCase
+from src.use_cases.produto.buscar_produto import BuscarProdutoUseCase
+from src.use_cases.produto.listar_produto import ListarProdutosUseCases
+from src.use_cases.produto.excluir_produto import ExcluirProdutoUseCase
 
 def create_app():
     app = Flask(__name__)
 
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///loja.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["TESTING"] = True
 
@@ -25,16 +23,16 @@ def create_app():
     produto_repo = SQLProdutoRepository()
     salvar_produto = SalvarProdutoUseCase(produto_repo)
     editar_produto = EditarProdutoUseCase(produto_repo)
-    excluir_produto = ExcluirProdutoUseCase(produto_repo)
     buscar_produto = BuscarProdutoUseCase(produto_repo)
-    listar_produto = ListarProdutosUseCase(produto_repo)
+    listar_produtos = ListarProdutosUseCases(produto_repo)
+    excluir_produto = ExcluirProdutoUseCase(produto_repo)
 
     produto_controller = criar_produto_controller(
-        salvar_produto, 
-        editar_produto, 
-        excluir_produto, 
-        buscar_produto, 
-        listar_produto
+        salvar_produto,
+        editar_produto,
+        buscar_produto,
+        listar_produtos,
+        excluir_produto
     )
 
     app.register_blueprint(produto_controller)

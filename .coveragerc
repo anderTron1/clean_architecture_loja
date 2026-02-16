@@ -4,7 +4,7 @@ omit =
     */__init__.py
     */domain/repositories/*
     */infra/models/*
-    */infra/db.py
+    */infra/db/db.py
     */infra/app.py
     */interfaces/presenters/*
     */tests/*

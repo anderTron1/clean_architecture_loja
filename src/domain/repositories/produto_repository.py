@@ -4,9 +4,9 @@ class ProdutoRepository(ABC):
     @abstractmethod
     def salvar(self, produto):
         pass
-    
+
     @abstractmethod
-    def editar(self, produto):
+    def buscar(self, id):
         pass
 
     @abstractmethod
@@ -14,9 +14,5 @@ class ProdutoRepository(ABC):
         pass
 
     @abstractmethod
-    def buscar(self, id):
-        pass
-
-    @abstractmethod
     def listar(self):
-        pass   
+        pass

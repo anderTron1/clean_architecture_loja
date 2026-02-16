@@ -1,29 +1,26 @@
 from flask import jsonify
 
-
-class ProdutoPresenter:
+class ProdutoPresenters:
     """Presenter para serialização de Produto DTOs"""
-    
     @staticmethod
     def apresentar_produto(produto_output_dto):
-        """Converte ProdutoOutputDTO em JSON"""
         return {
             "id": produto_output_dto.id,
             "nome": produto_output_dto.nome,
             "preco": produto_output_dto.preco
         }
-    
     @staticmethod
-    def apresentar_lista_produtos(lista_output_dto):
-        """Converte ListarProdutosOutputDTO em JSON"""
-        return {
-            "total": lista_output_dto.total,
-            "produtos": [
-                ProdutoPresenter.apresentar_produto(p) for p in lista_output_dto.produtos
-            ]
-        }
-    
+    def apresentar_lista_produtos(produtos_output_dto):
+        return [
+            {
+                "item": item+1,
+                "produto": ProdutoPresenters.apresentar_produto(p)
+            } for item, p in enumerate(produtos_output_dto)
+        ]
     @staticmethod
     def apresentar_erro(mensagem: str, status_code: int = 400):
-        """Formata resposta de erro"""
         return jsonify({"erro": mensagem}), status_code
+
+    @staticmethod
+    def apresentar_mensagem(mensagem: str):
+        return {"mensagem": mensagem}

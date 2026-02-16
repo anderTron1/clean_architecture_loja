@@ -1,6 +1,6 @@
 import pytest
 
-from src.infra.db import db
+from src.infra.db.db import db
 from app import create_app
 
 @pytest.fixture

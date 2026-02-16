@@ -1,58 +1,51 @@
 import pytest
+from src.domain.entities.produto import Produto
 
-from src.use_cases.produto.buscar_produto import BuscarProdutoUseCase
-from src.domain.produto import Produto
+from src.use_cases.produto.salvar_produto import SalvarProdutoUseCase
+from src.use_cases.produto.dtos import CadastrarProdutoDTO, ProdutoOutputDTO
 
-from src.domain.exceptions import ProdutoNaoEncontradoException, ProdutoInvalidoException
+from src.use_cases.produto.editar_produto import EditarProdutoUseCase
+from src.use_cases.produto.dtos import EditarProdutoDTO, ProdutoOutputDTO
 
-class FakeProdutoRepo:
+from src.domain.exceptions.produto_exceptions import ProdutoNaoEncontradoException
+
+class FakeProduto:
     def __init__(self):
-        self.produtos = {
+        self.produtos ={
             1: Produto(id=1, nome="Mouse", preco=150),
-            2: Produto(id=2, nome="Teclado", preco=250.00),
+            2: Produto(id=2, nome="Teclado", preco=240)
         }
     
-    def editar(self, produto):
-        fakeProduto = self.produtos.get(produto.id)
+    def buscar(self, id):
+        resultado = self.produtos.get(id)
+
+        return resultado
+
+    
+    def salvar(self, produto):
+        produto_edit = self.produtos.get(produto.id)
+        if produto.nome is not None:
+            produto_edit.nome = produto.nome
         
-        if not fakeProduto:
-            raise ProdutoNaoEncontradoException("Produto não encontrado!")
+        if produto.preco is not None:
+            produto_edit.preco = produto.preco
+        return produto_edit
 
-        campos = ["nome", "preco"]
+def test_editar_produto():
+    repo = FakeProduto()
+    novo_produto = Produto(id=1, nome="Monitor", preco=231.22)
 
-        alterou = False
-        for campo in campos:
-            valor = getattr(produto, campo)
-            if valor is not None and valor != "":
-                setattr(fakeProduto, campo, valor)
-                alterou = True
-        if not alterou:
-            raise ProdutoInvalidoException("Nenhum campo foi atualizado")
+    use_case = EditarProdutoUseCase(repo)
+    produto = use_case.execute(novo_produto)
 
-        return Produto(id=fakeProduto.id, nome=fakeProduto.nome, preco=fakeProduto.preco)
-        
-def test_editar_produto_existente():
-    repo = FakeProdutoRepo()
+    assert produto.nome == "Monitor"
+    assert produto.preco == 231.22
 
-    produto = Produto(id=1, nome="Mouse Gamer", preco=188)
+def test_editar_produto():
+    repo = FakeProduto()
+    novo_produto = Produto(id=234, nome="Monitor", preco=231.22)
 
-    resultados = repo.editar(produto)
-
-    assert resultados.id == 1
-    assert resultados.nome == "Mouse Gamer"
-    assert resultados.preco == 188
-
-def test_editar_produto_inexistente():
-    repo = FakeProdutoRepo()
-    produto = Produto(id=123, nome="Mouse", preco=150)
+    use_case = EditarProdutoUseCase(repo)
 
     with pytest.raises(ProdutoNaoEncontradoException):
-        repo.editar(produto)
-
-def test_editar_produto_sem_alteracoes():
-    repo = FakeProdutoRepo()
-
-    produto = Produto(id=1, nome="", preco=None)
-
-    with pytest.raises(ProdutoInvalidoException):
-        repo.editar(produto)
+        produto = use_case.execute(novo_produto)

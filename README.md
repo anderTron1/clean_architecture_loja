@@ -18,8 +18,14 @@ O objetivo é compreender como organizar o código de forma modular, separando r
 - Implementar boas práticas de separação de responsabilidades.
 - Criar testes automatizados para validar o comportamento da aplicação.
 
+## para fazer testes unitarios e de integração
+```bash
+    python -m pytest --cov=src --cov-report=html
+```
 ## Como Executar
 
 1. Clone o repositório:
    ```bash
    git clone <url-do-repositorio>
+    ```
+
